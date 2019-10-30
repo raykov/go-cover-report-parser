@@ -26,6 +26,8 @@ func usage() {
 var (
 	minimumExpectedCoverage = flag.Float64("minimum", 100.00, "minimal expected coverage")
 	coverprofile = flag.String("coverprofile", "", "a coverage profile produced by 'go test'")
+	verbose = flag.Bool("verbose", false, "detailed coverage report")
+	v = flag.Bool("v", false, "detailed coverage report")
 )
 
 func main() {
@@ -50,6 +52,10 @@ func main() {
 	cov, err := parseCoverage(f)
 	if err != nil {
 		log.Fatal(err.Error())
+	}
+
+	if *verbose || *v {
+		cov.Print()
 	}
 
 	if cov.Coverage() < *minimumExpectedCoverage {

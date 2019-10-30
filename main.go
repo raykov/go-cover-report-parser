@@ -1,27 +1,61 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
-	"strings"
+)
+
+const usageMessage = "" +
+	`Usage of 'go-jenkins-cover-report-parser':
+Given a coverage profile produced by 'go test':
+	go-jenkins-cover-report-parser -coverprofile=c.out
+
+Set minimal expected coverage:
+	go-jenkins-cover-report-parser -coverprofile=c.out -minimum=100
+`
+
+func usage() {
+	fmt.Fprintln(os.Stderr, usageMessage)
+	fmt.Fprintln(os.Stderr, "Flags:")
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
+var (
+	minimumExpectedCoverage = flag.Float64("minimum", 100.00, "minimal expected coverage")
+	coverprofile = flag.String("coverprofile", "", "a coverage profile produced by 'go test'")
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		parts := strings.Split(os.Args[0], "/")
-		log.Fatalf("Usage: \n\n\t%s path_to_coverage.out \n\n", parts[len(parts)-1])
+	flag.Usage = usage
+	flag.Parse()
+
+	// Usage information when no arguments.
+	if flag.NFlag() == 0 && flag.NArg() == 0 {
+		flag.Usage()
 	}
 
-	f, err := os.Open(os.Args[1])
+	if *minimumExpectedCoverage > 100.0 {
+		*minimumExpectedCoverage = 100.0
+	}
+
+	f, err := os.Open(*coverprofile)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	defer f.Close()
 
-	err = checkCoverage(f)
+	cov, err := parseCoverage(f)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	log.Println("100% coverage")
+	if cov.Coverage() < *minimumExpectedCoverage {
+		log.Printf("Coverage (%.2f%%) is below the expected minimum coverage (%.2f%%).", cov.Coverage(), *minimumExpectedCoverage)
+		os.Exit(2)
+	}
+
+	log.Printf("%.2f%% coverage\n", cov.Coverage())
 }

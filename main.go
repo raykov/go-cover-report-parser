@@ -9,7 +9,7 @@ import (
 func main() {
 	if len(os.Args) < 2 {
 		parts := strings.Split(os.Args[0], "/")
-		log.Fatalf("Usage: \n\n\t%s path_to_coverage.out \n\n", parts[len(parts) - 1])
+		log.Fatalf("Usage: \n\n\t%s path_to_coverage.out \n\n", parts[len(parts)-1])
 	}
 
 	f, err := os.Open(os.Args[1])

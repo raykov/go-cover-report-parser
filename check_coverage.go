@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+var uncoveredError = errors.New("some lines are not covered")
+var notAReaderError = errors.New("reader should satisfy io.Reader interface")
+
 func checkCoverage(reader interface{}) (err error) {
 	var r *bufio.Reader
 
@@ -14,7 +17,7 @@ func checkCoverage(reader interface{}) (err error) {
 	case io.Reader:
 		r = bufio.NewReader(reader.(io.Reader))
 	default:
-		return errors.New("reader should satisfy io.Reader interface")
+		return notAReaderError
 	}
 
 	// Skip first line
@@ -31,7 +34,7 @@ func checkCoverage(reader interface{}) (err error) {
 		coverage := strings.Split(strings.TrimSpace(line), " ")
 
 		if coverage[2] == "0" {
-			return errors.New("some lines are not covered")
+			return uncoveredError
 		}
 	}
 	return nil

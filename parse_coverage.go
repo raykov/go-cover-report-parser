@@ -4,46 +4,12 @@ import (
 	"bufio"
 	"errors"
 	"io"
-	"log"
 	"strconv"
 	"strings"
 )
 
 var uncoveredError = errors.New("some lines are not covered")
 var notAReaderError = errors.New("reader should satisfy io.Reader interface")
-
-type fileCov struct {
-	lines float64
-	covered float64
-}
-
-func (fc *fileCov) Add(lines, covered float64) {
-	fc.lines += lines
-	fc.covered += covered
-}
-
-func (fc *fileCov) Coverage() float64 {
-	return fc.covered / fc.lines * 100
-}
-
-type coverage map[string]fileCov
-
-func (c *coverage) Coverage() float64 {
-	var lines, covered float64
-
-	for _, f := range *c {
-		lines += f.lines
-		covered += f.covered
-	}
-
-	return covered / lines * 100
-}
-
-func (c *coverage) Print() {
-	for n, f := range *c {
-		log.Printf("%.2f%%: \t%s\n", f.Coverage(), n)
-	}
-}
 
 func parseCoverage(reader interface{}) (cov coverage, err error) {
 	var r *bufio.Reader

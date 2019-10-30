@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -30,18 +31,10 @@ var (
 	v = flag.Bool("v", false, "detailed coverage report")
 )
 
+var uncoveredError = errors.New("some lines are not covered")
+
 func main() {
-	flag.Usage = usage
-	flag.Parse()
-
-	// Usage information when no arguments.
-	if flag.NFlag() == 0 && flag.NArg() == 0 {
-		flag.Usage()
-	}
-
-	if *minimumExpectedCoverage > 100.0 {
-		*minimumExpectedCoverage = 100.0
-	}
+	setupFlags()
 
 	f, err := os.Open(*coverprofile)
 	if err != nil {
@@ -54,14 +47,18 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	if *verbose || *v {
-		cov.Print()
-	}
-
-	if cov.Coverage() < *minimumExpectedCoverage {
-		log.Printf("Coverage (%.2f%%) is below the expected minimum coverage (%.2f%%).", cov.Coverage(), *minimumExpectedCoverage)
+	err = checkCoverage(cov)
+	if err == uncoveredError {
 		os.Exit(2)
 	}
+}
 
-	log.Printf("%.2f%% coverage\n", cov.Coverage())
+func setupFlags() {
+	flag.Usage = usage
+	flag.Parse()
+
+	// Usage information when no arguments.
+	if flag.NFlag() == 0 && flag.NArg() == 0 {
+		flag.Usage()
+	}
 }

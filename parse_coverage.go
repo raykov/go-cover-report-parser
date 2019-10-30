@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-var uncoveredError = errors.New("some lines are not covered")
 var notAReaderError = errors.New("reader should satisfy io.Reader interface")
 
 func parseCoverage(reader interface{}) (cov coverage, err error) {

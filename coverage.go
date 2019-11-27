@@ -20,25 +20,13 @@ func (c coverage) Coverage() float64 {
 
 type keys []string
 
-func (k keys) Len() int {
-	return len(k)
-}
-
-func (k keys) Less(i, j int) bool {
-	return k[i] < k[j]
-}
-
-func (k keys) Swap(i,j int) {
-	k[i], k[j] = k[j], k[i]
-}
-
 func (c coverage) Print() {
 	keys := make(keys, 0, len(c))
 	for key, _ := range c {
 		keys = append(keys, key)
 	}
 
-	sort.Sort(keys)
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 
 	for _, key := range keys {
 		cov := c[key]

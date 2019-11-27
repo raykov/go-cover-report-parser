@@ -44,10 +44,33 @@ func parseCoverage(reader interface{}) (cov coverage, err error) {
 		}
 		fCov := cov[fileName]
 
-		if parsedLine[2] == "0" {
+		switch {
+		case parsedLine[2] == "0":
 			fCov.Add(lines, 0)
-			//return uncoveredError
-		} else {
+		case parsedLine[1] == "0":
+			/*
+			The case when we have no statements in the code,
+			but covered function with the tests.
+
+				type SomeInterface interface {
+					DoSomething()
+				}
+
+				type fakeStruct struct{}
+
+				func (fakeStruct) DoSomething() {}
+
+			fakeStruct satisfies SomeInterface and provides fake functionality
+			for test purposes, for instance. But it does nothing.
+			If you will cover this code with tests, in cover report you will get
+			a line like
+
+				file.go 0 1
+
+			In this case we need to skip this line.
+			I just want to have this explicit.
+			*/
+		default:
 			fCov.Add(lines, lines)
 		}
 

@@ -1,4 +1,4 @@
-package main
+package coverreportparser
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 
 var notAReaderError = errors.New("reader should satisfy io.Reader interface")
 
-func parseCoverage(reader interface{}) (cov coverage, err error) {
+func parse(reader interface{}) (cov coverage, err error) {
 	var r *bufio.Reader
 
 	switch reader.(type) {

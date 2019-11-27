@@ -1,4 +1,4 @@
-package main
+package coverreportparser
 
 type fileCov struct {
 	lines float64

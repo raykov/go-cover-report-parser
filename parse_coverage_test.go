@@ -34,8 +34,15 @@ file2:1.1,2.10 1 100
 file3:1.1,2.10 1 1000
 file3:3.1,5.10 97 0
 `,
+	`mode: set
+file1:1.1,2.10 0 1
+file1:1.1,2.10 1 1
+file2:1.1,2.10 1 0
+file3:1.1,2.10 1 1
+file3:3.1,5.10 1 1
+`,
 }
-var uncoveredExpectedResults = []float64{99, 3}
+var uncoveredExpectedResults = []float64{99, 3, 75}
 
 func TestCheckCoverage(t *testing.T) {
 	for i, data := range covered {

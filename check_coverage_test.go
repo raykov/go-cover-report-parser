@@ -39,7 +39,7 @@ func ExampleUnCovered100Percents() {
 	*minimumExpectedCoverage = 100
 
 	checkCoverage(cov)
-	// Coverage (0.00%) is below the expected minimum coverage (100.00%).
+	// Output: Coverage (0.00%) is below the expected minimum coverage (100.00%).
 }
 
 func ExampleUnCovered50Percents() {
@@ -50,7 +50,7 @@ func ExampleUnCovered50Percents() {
 	*minimumExpectedCoverage = 50
 
 	checkCoverage(cov)
-	// Coverage (0.00%) is below the expected minimum coverage (50.00%).
+	// Output: Coverage (0.00%) is below the expected minimum coverage (50.00%).
 }
 
 func ExampleUnCovered0Percents() {
@@ -81,4 +81,28 @@ func ExampleVerbose() {
 	//100.00%: 	file3
 	//75.00%: 	file4
 	//Coverage (63.98%) is below the expected minimum coverage (100.00%).
+}
+
+func ExampleMinExpectedCoverageBiggerThenOneHundred() {
+	cov := coverage{
+		"file1":{lines: 1, covered: 0},
+	}
+
+	*minimumExpectedCoverage = 1_000
+
+	checkCoverage(cov)
+	// Output: 0.00%: 	file1
+	//Coverage (0.00%) is below the expected minimum coverage (100.00%).
+}
+
+func ExampleMinExpectedCoverageBelowZero() {
+	cov := coverage{
+		"file1":{lines: 1, covered: 0},
+	}
+
+	*minimumExpectedCoverage = -1
+
+	checkCoverage(cov)
+	// Output: 0.00%: 	file1
+	//Coverage (0.00%) is below the expected minimum coverage (100.00%).
 }

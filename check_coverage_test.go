@@ -1,35 +1,5 @@
 package main
 
-//var covered = []string{
-//	`mode: atomic
-//file1:1.1,2.10 1 1
-//file2:1.1,2.10 1 1
-//file3:1.1,2.10 1 1
-//file3:3.1,5.10 1 1
-//`,
-//	`mode: set
-//file1:1.1,2.10 1 10
-//file2:1.1,2.10 1 100
-//file3:1.1,2.10 1 1000
-//file3:3.1,5.10 1 2
-//`,
-//}
-//
-//var uncovered = []string{
-//	`mode: atomic
-//file1:1.1,2.10 1 0
-//file2:1.1,2.10 1 1
-//file3:1.1,2.10 1 1
-//file3:3.1,5.10 1 1
-//`,
-//	`mode: set
-//file1:1.1,2.10 1 10
-//file2:1.1,2.10 1 100
-//file3:1.1,2.10 1 1000
-//file3:3.1,5.10 1 0
-//`,
-//}
-
 func ExampleCovered100Percents() {
 	cov := coverage{
 		"file1":{lines: 1, covered: 1},

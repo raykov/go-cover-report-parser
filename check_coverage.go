@@ -1,24 +1,30 @@
-package main
+package coverreportparser
 
 import (
 	"fmt"
 )
 
-func checkCoverage(cov coverage) (err error) {
-	if *verbose || *v {
+func check(cov coverage, opts Options) (err error) {
+	if opts.Verbose {
 		cov.Print()
 	}
+	minCov := opts.MinimumExpectedCoverage
 
-	if *minimumExpectedCoverage > 100.0 || *minimumExpectedCoverage < 0.0 {
-		*minimumExpectedCoverage = 100.0
+	if minCov > 100.0 || minCov < 0.0 {
+		minCov = 100.0
 	}
 
-	if cov.Coverage() < *minimumExpectedCoverage {
-		fmt.Printf("Coverage (%.2f%%) is below the expected minimum coverage (%.2f%%).", cov.Coverage(), *minimumExpectedCoverage)
-		return uncoveredError
+	if cov.Coverage() < minCov {
+		fmt.Printf(
+			"Coverage (%.2f%%) is below the expected minimum coverage (%.2f%%).",
+			cov.Coverage(),
+			minCov,
+		)
+
+		return UncoveredError
 	} else {
 		fmt.Printf("%.2f%% coverage\n", cov.Coverage())
 	}
 
-	return
+	return nil
 }

@@ -1,0 +1,2 @@
+mode: set
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:1.1,2.10 a 1

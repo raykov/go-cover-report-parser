@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestExecute(t *testing.T) {
+func TestParse(t *testing.T) {
 	t.Run("when file is missing", func(t *testing.T) {
 		opts := Options{
 			CoverProfile:            "/tmp/some-missing-dir/some-missing-file",
@@ -14,7 +14,7 @@ func TestExecute(t *testing.T) {
 			MinimumExpectedCoverage: 100,
 		}
 
-		err := Execute(opts)
+		err := Parse(opts)
 		assert.Equal(t, "open /tmp/some-missing-dir/some-missing-file: no such file or directory", err.Error())
 	})
 
@@ -25,7 +25,7 @@ func TestExecute(t *testing.T) {
 			MinimumExpectedCoverage: 100,
 		}
 
-		err := Execute(opts)
+		err := Parse(opts)
 		assert.Equal(t, `strconv.ParseFloat: parsing "a": invalid syntax`, err.Error())
 	})
 
@@ -36,7 +36,7 @@ func TestExecute(t *testing.T) {
 			MinimumExpectedCoverage: 100,
 		}
 
-		err := Execute(opts)
+		err := Parse(opts)
 		assert.Equal(t, `some lines are not covered`, err.Error())
 	})
 
@@ -47,7 +47,7 @@ func TestExecute(t *testing.T) {
 			MinimumExpectedCoverage: 100,
 		}
 
-		err := Execute(opts)
+		err := Parse(opts)
 		assert.Nil(t, err)
 	})
 }

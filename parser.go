@@ -13,14 +13,14 @@ type Options struct {
 
 var UncoveredError = errors.New("some lines are not covered")
 
-func Execute(opts Options) error {
+func Parse(opts Options) error {
 	reader, err := os.Open(opts.CoverProfile)
 	if err != nil {
 		return err
 	}
 	defer reader.Close()
 
-	cov, err := parse(reader)
+	cov, err := parseReport(reader)
 	if err != nil {
 		return err
 	}

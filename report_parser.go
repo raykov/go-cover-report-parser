@@ -10,7 +10,7 @@ import (
 
 var notAReaderError = errors.New("reader should satisfy io.Reader interface")
 
-func parse(reader interface{}) (cov coverage, err error) {
+func parseReport(reader interface{}) (cov coverage, err error) {
 	var r *bufio.Reader
 
 	switch reader.(type) {
@@ -43,7 +43,7 @@ func parse(reader interface{}) (cov coverage, err error) {
 		}
 
 		if _, ok := cov[fileName]; !ok {
-			cov[fileName] = fileCov{}
+			cov[fileName] = fileCoverage{}
 		}
 		fCov := cov[fileName]
 

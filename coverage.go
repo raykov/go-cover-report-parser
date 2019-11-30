@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-type coverage map[string]fileCov
+type coverage map[string]fileCoverage
 
 func (c coverage) Coverage() float64 {
 	var lines, covered float64

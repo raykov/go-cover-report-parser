@@ -44,9 +44,9 @@ file3:3.1,5.10 1 1
 }
 var uncoveredExpectedResults = []float64{99, 3, 75}
 
-func TestCheckCoverage(t *testing.T) {
+func TestParseReport(t *testing.T) {
 	for i, data := range covered {
-		cov, err := parse(strings.NewReader(data))
+		cov, err := parseReport(strings.NewReader(data))
 		if err != nil {
 			t.Errorf("returned unexpected result: \ngot  %v \nwant %v\n  for\n%v\n\n", err, nil, data)
 		}
@@ -57,7 +57,7 @@ func TestCheckCoverage(t *testing.T) {
 	}
 
 	for i, data := range uncovered {
-		cov, err := parse(strings.NewReader(data))
+		cov, err := parseReport(strings.NewReader(data))
 		if err != nil {
 			t.Errorf("returned unexpected result: \ngot  %v \nwant %v\n  for\n%v\n\n", err, nil, data)
 		}
@@ -68,13 +68,13 @@ func TestCheckCoverage(t *testing.T) {
 	}
 }
 
-func TestCheckCoverageNotAReader(t *testing.T) {
-	_, err := parse("")
+func TestParseReportNotAReader(t *testing.T) {
+	_, err := parseReport("")
 	if err != notAReaderError {
 		t.Errorf("returned unexpected result: \ngot  %v \nwant %v\n\n", err, notAReaderError)
 	}
 
-	_, err = parse(strings.NewReader(covered[0]))
+	_, err = parseReport(strings.NewReader(covered[0]))
 	if err != nil {
 		t.Errorf("returned unexpected result: \ngot  %v \nwant %v\n\n", err, nil)
 	}

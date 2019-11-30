@@ -41,7 +41,7 @@ func main() {
 		MinimumExpectedCoverage: *minimumExpectedCoverage,
 	}
 
-	err := coverReport.Execute(params)
+	err := coverReport.Parse(params)
 	if err != nil {
 		if err == coverReport.UncoveredError {
 			os.Exit(2)

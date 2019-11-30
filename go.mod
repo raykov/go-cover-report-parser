@@ -1,4 +1,4 @@
-module github.com/raykov/go-jenkins-cover-report-parser
+module github.com/raykov/go-cover-report-parser
 
 go 1.13
 

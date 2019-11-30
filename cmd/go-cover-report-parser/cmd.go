@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	coverReport "github.com/raykov/go-jenkins-cover-report-parser"
+	coverReport "github.com/raykov/go-cover-report-parser"
 )
 
 const usageMessage = "" +

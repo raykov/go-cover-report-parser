@@ -27,17 +27,17 @@ func usage() {
 
 var (
 	minimumExpectedCoverage = flag.Float64("minimum", 100.00, "minimal expected coverage")
-	coverprofile = flag.String("coverprofile", "", "a coverage profile produced by 'go test'")
-	verbose = flag.Bool("verbose", false, "detailed coverage report")
-	v = flag.Bool("v", false, "detailed coverage report")
+	coverprofile            = flag.String("coverprofile", "", "a coverage profile produced by 'go test'")
+	verbose                 = flag.Bool("verbose", false, "detailed coverage report")
+	v                       = flag.Bool("v", false, "detailed coverage report")
 )
 
 func main() {
 	setupFlags()
 
 	params := coverReport.Options{
-		CoverProfile: *coverprofile,
-		Verbose: *verbose || *v,
+		CoverProfile:            *coverprofile,
+		Verbose:                 *verbose || *v,
 		MinimumExpectedCoverage: *minimumExpectedCoverage,
 	}
 

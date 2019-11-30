@@ -2,7 +2,7 @@ package coverreportparser
 
 func ExampleCovered100Percents() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 1},
+		"file1": {lines: 1, covered: 1},
 	}
 	opts := Options{
 		CoverProfile:            "",
@@ -16,7 +16,7 @@ func ExampleCovered100Percents() {
 
 func ExampleCovered50Percents() {
 	cov := coverage{
-		"file1":{lines: 2, covered: 1},
+		"file1": {lines: 2, covered: 1},
 	}
 	opts := Options{
 		CoverProfile:            "",
@@ -24,14 +24,13 @@ func ExampleCovered50Percents() {
 		MinimumExpectedCoverage: 50,
 	}
 
-
 	check(cov, opts)
 	// Output: 50.00% coverage
 }
 
 func ExampleCovered0Percents() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
+		"file1": {lines: 1, covered: 0},
 	}
 	opts := Options{
 		CoverProfile:            "",
@@ -45,7 +44,7 @@ func ExampleCovered0Percents() {
 
 func ExampleUnCovered100Percents() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
+		"file1": {lines: 1, covered: 0},
 	}
 
 	opts := Options{
@@ -60,7 +59,7 @@ func ExampleUnCovered100Percents() {
 
 func ExampleUnCovered50Percents() {
 	cov := coverage{
-		"file1":{lines: 2, covered: 0},
+		"file1": {lines: 2, covered: 0},
 	}
 
 	opts := Options{
@@ -75,7 +74,7 @@ func ExampleUnCovered50Percents() {
 
 func ExampleUnCovered0Percents() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
+		"file1": {lines: 1, covered: 0},
 	}
 
 	opts := Options{
@@ -90,10 +89,10 @@ func ExampleUnCovered0Percents() {
 
 func ExampleVerbose() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
-		"file2":{lines: 100, covered: 50},
-		"file3":{lines: 10, covered: 10},
-		"file4":{lines: 100, covered: 75},
+		"file1": {lines: 1, covered: 0},
+		"file2": {lines: 100, covered: 50},
+		"file3": {lines: 10, covered: 10},
+		"file4": {lines: 100, covered: 75},
 	}
 
 	opts := Options{
@@ -112,7 +111,7 @@ func ExampleVerbose() {
 
 func ExampleMinExpectedCoverageBiggerThenOneHundred() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
+		"file1": {lines: 1, covered: 0},
 	}
 
 	opts := Options{
@@ -128,7 +127,7 @@ func ExampleMinExpectedCoverageBiggerThenOneHundred() {
 
 func ExampleMinExpectedCoverageBelowZero() {
 	cov := coverage{
-		"file1":{lines: 1, covered: 0},
+		"file1": {lines: 1, covered: 0},
 	}
 
 	opts := Options{

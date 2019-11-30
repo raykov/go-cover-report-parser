@@ -8,7 +8,7 @@ import (
 
 func TestExecute(t *testing.T) {
 	t.Run("when file is missing", func(t *testing.T) {
-		opts := Options {
+		opts := Options{
 			CoverProfile:            "/tmp/some-missing-dir/some-missing-file",
 			Verbose:                 false,
 			MinimumExpectedCoverage: 100,
@@ -19,7 +19,7 @@ func TestExecute(t *testing.T) {
 	})
 
 	t.Run("when file is invalid", func(t *testing.T) {
-		opts := Options {
+		opts := Options{
 			CoverProfile:            "./testdata/coverage_invalid.out",
 			Verbose:                 false,
 			MinimumExpectedCoverage: 100,
@@ -30,7 +30,7 @@ func TestExecute(t *testing.T) {
 	})
 
 	t.Run("when coverage rate is below expected", func(t *testing.T) {
-		opts := Options {
+		opts := Options{
 			CoverProfile:            "./testdata/coverage_0.out",
 			Verbose:                 false,
 			MinimumExpectedCoverage: 100,
@@ -41,7 +41,7 @@ func TestExecute(t *testing.T) {
 	})
 
 	t.Run("when everything is covered", func(t *testing.T) {
-		opts := Options {
+		opts := Options{
 			CoverProfile:            "./testdata/coverage_100.out",
 			Verbose:                 false,
 			MinimumExpectedCoverage: 100,

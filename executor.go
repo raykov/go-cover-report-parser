@@ -6,8 +6,8 @@ import (
 )
 
 type Options struct {
-	CoverProfile string
-	Verbose bool
+	CoverProfile            string
+	Verbose                 bool
 	MinimumExpectedCoverage float64
 }
 

@@ -1,7 +1,7 @@
 package coverreportparser
 
 type fileCov struct {
-	lines float64
+	lines   float64
 	covered float64
 }
 

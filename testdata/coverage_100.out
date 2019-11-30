@@ -1,0 +1,11 @@
+mode: set
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:1.1,2.10 1 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:3.1,4.10 2 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:5.1,6.10 3 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:7.1,8.10 4 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_1.go:9.1,10.10 5 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_2.go:1.1,2.10 1 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_2.go:3.1,4.10 2 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_2.go:5.1,6.10 3 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_2.go:7.1,8.10 4 1
+github.com/raykov/go-jenkins-cover-report-parser/test_file_2.go:9.1,10.10 5 1

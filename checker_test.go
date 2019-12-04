@@ -1,142 +1,205 @@
 package coverreportparser
 
-func ExampleCovered100Percents() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 1},
-	}
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 100,
-	}
+import (
+	"testing"
 
-	check(cov, opts)
-	// Output: 100.00% coverage
+	"github.com/stretchr/testify/assert"
+)
+
+var coveredLine = line{
+	index:     0,
+	statement: true,
+	covered:   true,
+}
+var uncoveredLine = line{
+	index:     0,
+	statement: true,
+	covered:   false,
 }
 
-func ExampleCovered50Percents() {
-	cov := coverage{
-		"file1": {lines: 2, covered: 1},
+func TestCovered100Percents(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+		},
 	}
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 50,
-	}
+	expected := `100.00% coverage
+`
 
-	check(cov, opts)
-	// Output: 50.00% coverage
+	result := Check(&report, 9, false)
+
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleCovered0Percents() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
+func TestCovered50Percents(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+		},
 	}
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 0,
-	}
+	expected := `50.00% coverage
+`
 
-	check(cov, opts)
-	// Output: 0.00% coverage
+	result := Check(&report, 0, false)
+
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleUnCovered100Percents() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
+func TestCovered0Percents(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+		},
 	}
+	expected := `0.00% coverage
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 100,
-	}
+	result := Check(&report, 0, false)
 
-	check(cov, opts)
-	// Output: Coverage (0.00%) is below the expected minimum coverage (100.00%).
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleUnCovered50Percents() {
-	cov := coverage{
-		"file1": {lines: 2, covered: 0},
+func TestUnCovered100Percents(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+		},
 	}
+	expected := `Coverage (0.00%) is below the expected minimum coverage (100.00%).
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 50,
-	}
+	result := Check(&report, 100, false)
 
-	check(cov, opts)
-	// Output: Coverage (0.00%) is below the expected minimum coverage (50.00%).
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleUnCovered0Percents() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
+func TestUnCovered50Percents(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+		},
 	}
+	expected := `Coverage (0.00%) is below the expected minimum coverage (50.00%).
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 false,
-		MinimumExpectedCoverage: 0,
-	}
+	result := Check(&report, 50, false)
 
-	check(cov, opts)
-	// Output: 0.00% coverage
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleVerbose() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
-		"file2": {lines: 100, covered: 50},
-		"file3": {lines: 10, covered: 10},
-		"file4": {lines: 100, covered: 75},
+func TestVerbose(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&uncoveredLine,
+					&coveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&uncoveredLine,
+				},
+			},
+		},
 	}
+	expected := `50.00%: 	file1
+0.00%: 	file2
+Coverage (33.33%) is below the expected minimum coverage (100.00%).
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 true,
-		MinimumExpectedCoverage: 100,
-	}
+	result := Check(&report, 100, true)
 
-	check(cov, opts)
-	// Output: 0.00%: 	file1
-	//50.00%: 	file2
-	//100.00%: 	file3
-	//75.00%: 	file4
-	//Coverage (63.98%) is below the expected minimum coverage (100.00%).
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleMinExpectedCoverageBiggerThenOneHundred() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
+func TestMinExpectedCoverageBiggerThenOneHundred(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+		},
 	}
+	expected := `100.00% coverage
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 true,
-		MinimumExpectedCoverage: 1_000,
-	}
+	result := Check(&report, 1_000, false)
 
-	check(cov, opts)
-	// Output: 0.00%: 	file1
-	//Coverage (0.00%) is below the expected minimum coverage (100.00%).
+	assert.Equal(t, expected, result.String())
 }
 
-func ExampleMinExpectedCoverageBelowZero() {
-	cov := coverage{
-		"file1": {lines: 1, covered: 0},
+func TestMinExpectedCoverageBelowZero(t *testing.T) {
+	report := report{
+		files: map[string]File{
+			"file1": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+			"file2": &file{
+				lines: []Line{
+					&coveredLine,
+				},
+			},
+		},
 	}
+	expected := `100.00% coverage
+`
 
-	opts := Options{
-		CoverProfile:            "",
-		Verbose:                 true,
-		MinimumExpectedCoverage: -1,
-	}
+	result := Check(&report, -1, false)
 
-	check(cov, opts)
-	// Output: 0.00%: 	file1
-	//Coverage (0.00%) is below the expected minimum coverage (100.00%).
+	assert.Equal(t, expected, result.String())
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 
 	coverReport "github.com/raykov/go-cover-report-parser"
@@ -15,8 +14,7 @@ Given a coverage profile produced by 'go test':
 	go-jenkins-cover-report-parser -coverprofile=c.out
 
 Set minimal expected coverage:
-	go-jenkins-cover-report-parser -coverprofile=c.out -minimum=100
-`
+	go-jenkins-cover-report-parser -coverprofile=c.out -minimum=100`
 
 func usage() {
 	fmt.Fprintln(os.Stderr, usageMessage)
@@ -35,18 +33,26 @@ var (
 func main() {
 	setupFlags()
 
-	params := coverReport.Options{
-		CoverProfile:            *coverprofile,
-		Verbose:                 *verbose || *v,
-		MinimumExpectedCoverage: *minimumExpectedCoverage,
+	reader, err := os.Open(*coverprofile)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+	defer reader.Close()
+
+	report, err := coverReport.Parse(reader)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
 
-	err := coverReport.Execute(params)
+	result := coverReport.Check(report, *minimumExpectedCoverage, *verbose || *v)
 	if err != nil {
-		if err == coverReport.UncoveredError {
-			os.Exit(2)
-		}
-		log.Fatal(err)
+		fmt.Println(err.Error())
+	}
+	fmt.Println(result)
+	if result.IsFailure() {
+		os.Exit(1)
 	}
 }
 

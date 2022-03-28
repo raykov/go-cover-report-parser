@@ -10,7 +10,7 @@ import (
 )
 
 // Parse parses provided reader and returns a coverage report
-func Parse(reader interface{}) (Report, error) {
+func Parse(reader any) (Report, error) {
 	var bufReader *bufio.Reader
 
 	switch reader.(type) {
